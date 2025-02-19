@@ -77,7 +77,8 @@ public class Driver2 {
             System.out.println(error);
         }
 
-        courses.sort(Comparator.comparing(Course::getCode).reversed());
+        // Cetak daftar course dalam urutan terbalik
+        Collections.reverse(courses);
         for (Course course : courses) {
             System.out.println(course);
         }
@@ -111,6 +112,5 @@ public class Driver2 {
             }
         }
         return false;
-        
     }
 }
