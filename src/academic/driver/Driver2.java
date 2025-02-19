@@ -3,9 +3,7 @@ package academic.driver;
 import academic.model.Course;
 import academic.model.Enrollment;
 import academic.model.Student;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @autor 12S23034 Pariama Valentino
@@ -18,13 +16,14 @@ public class Driver2 {
         List<Course> courses = new ArrayList<>();
         List<Student> students = new ArrayList<>();
         List<Enrollment> enrollments = new ArrayList<>();
-        List<String> invalidMessages = new ArrayList<>();
+        List<String> errors = new ArrayList<>();
 
         while (true) {
             String input = scanner.nextLine();
             if (input.equals("---")) {
                 break;
             }
+
             String[] parts = input.split("#");
             String command = parts[0];
 
@@ -35,18 +34,26 @@ public class Driver2 {
                         String name = parts[2];
                         int credits = Integer.parseInt(parts[3]);
                         String grade = parts[4];
-                        courses.add(new Course(code, name, credits, grade));
+
+                        if (!isCourseExists(courses, code)) {
+                            courses.add(new Course(code, name, credits, grade));
+                        }
                     }
                     break;
+
                 case "student-add":
                     if (parts.length == 5) {
                         String id = parts[1];
                         String name = parts[2];
                         int year = Integer.parseInt(parts[3]);
                         String major = parts[4];
-                        students.add(new Student(id, name, year, major));
+
+                        if (!isStudentExists(students, id)) {
+                            students.add(new Student(id, name, year, major));
+                        }
                     }
                     break;
+
                 case "enrollment-add":
                     if (parts.length == 5) {
                         String courseCode = parts[1];
@@ -54,43 +61,32 @@ public class Driver2 {
                         String academicYear = parts[3];
                         String semester = parts[4];
 
-                        // Validasi keberadaan course
-                        Course course = findCourse(courses, courseCode);
-                        if (course == null) {
-                            invalidMessages.add("invalid course|" + courseCode);
-                            continue;
+                        if (!isCourseExists(courses, courseCode)) {
+                            errors.add("invalid course|" + courseCode);
+                        } else if (!isStudentExists(students, studentId)) {
+                            errors.add("invalid student|" + studentId);
+                        } else {
+                            enrollments.add(new Enrollment(courseCode, studentId, academicYear, semester));
                         }
-
-                        // Validasi keberadaan student
-                        Student student = findStudent(students, studentId);
-                        if (student == null) {
-                            invalidMessages.add("invalid student|" + studentId);
-                            continue;
-                        }
-
-                        // Jika valid, tambahkan enrollment
-                        enrollments.add(new Enrollment(courseCode, studentId, academicYear, semester));
                     }
                     break;
             }
         }
 
-        // Cetak pesan invalid
-        for (String message : invalidMessages) {
-            System.out.println(message);
+        for (String error : errors) {
+            System.out.println(error);
         }
 
-        // Cetak daftar course
+        courses.sort(Comparator.comparing(Course::getCode));
         for (Course course : courses) {
             System.out.println(course);
         }
 
-        // Cetak daftar student
+        students.sort(Comparator.comparing(Student::getId));
         for (Student student : students) {
             System.out.println(student);
         }
 
-        // Cetak daftar enrollment
         for (Enrollment enrollment : enrollments) {
             System.out.println(enrollment);
         }
@@ -98,24 +94,22 @@ public class Driver2 {
         scanner.close();
     }
 
-    // Metode bantu untuk mencari course berdasarkan kode
-    private static Course findCourse(List<Course> courses, String courseCode) {
-        for (Course c : courses) {
-            if (c.getCode().equals(courseCode)) {
-                return c;
+    private static boolean isCourseExists(List<Course> courses, String code) {
+        for (Course course : courses) {
+            if (course.getCode().equals(code)) {
+                return true;
             }
         }
-        return null;
+        return false;
     }
 
-    // Metode bantu untuk mencari student berdasarkan ID
-    private static Student findStudent(List<Student> students, String studentId) {
-        for (Student s : students) {
-            if (s.getId().equals(studentId)) {
-                return s;
+    private static boolean isStudentExists(List<Student> students, String id) {
+        for (Student student : students) {
+            if (student.getId().equals(id)) {
+                return true;
             }
         }
-        return null;
-        
+        return false;
     }
+
 }
