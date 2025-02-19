@@ -6,25 +6,25 @@ package academic.model;
  */
 
 public class Student {
-    private final String nim;
+    private final String id;
     private final String name;
     private final int year;
     private final String department;
 
-    public Student(String nim, String name, int year, String department) {
-        this.nim = nim;
+    public Student(String id, String name, int year, String department) {
+        this.id = id;
         this.name = name;
         this.year = year;
         this.department = department;
     }
 
-    public String getNim() { return nim; }
+    public String getId() { return id; }
     public String getName() { return name; }
     public int getYear() { return year; }
     public String getDepartment() { return department; }
 
     @Override
     public String toString() {
-        return nim + "|" + name + "|" + year + "|" + department;
+        return id + "|" + name + "|" + year + "|" + department;
     }
 }

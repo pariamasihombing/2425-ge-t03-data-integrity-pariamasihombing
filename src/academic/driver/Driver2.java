@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * @author 12S23034 Pariama Valentino
- * @author 12S23022 P. Santa Hillary Sitorus
+ * @autor 12S23034 Pariama Valentino
+ * @autor 12S23022 P. Santa Hillary Sitorus
  */
 
 public class Driver2 {
@@ -18,6 +18,7 @@ public class Driver2 {
         List<Course> courses = new ArrayList<>();
         List<Student> students = new ArrayList<>();
         List<Enrollment> enrollments = new ArrayList<>();
+        List<String> invalidMessages = new ArrayList<>();
 
         while (true) {
             String input = scanner.nextLine();
@@ -56,14 +57,14 @@ public class Driver2 {
                         // Validasi keberadaan course
                         Course course = findCourse(courses, courseCode);
                         if (course == null) {
-                            System.out.println("invalid course|" + courseCode);
+                            invalidMessages.add("invalid course|" + courseCode);
                             continue;
                         }
 
                         // Validasi keberadaan student
                         Student student = findStudent(students, studentId);
                         if (student == null) {
-                            System.out.println("invalid student|" + studentId);
+                            invalidMessages.add("invalid student|" + studentId);
                             continue;
                         }
 
@@ -72,6 +73,11 @@ public class Driver2 {
                     }
                     break;
             }
+        }
+
+        // Cetak pesan invalid
+        for (String message : invalidMessages) {
+            System.out.println(message);
         }
 
         // Cetak daftar course
