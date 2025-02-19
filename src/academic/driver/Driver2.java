@@ -77,16 +77,17 @@ public class Driver2 {
             System.out.println(error);
         }
 
-        courses.sort(Comparator.comparing(Course::getCode));
+        courses.sort(Comparator.comparing(Course::getCode).reversed());
         for (Course course : courses) {
             System.out.println(course);
         }
 
-        students.sort(Comparator.comparing(Student::getId));
+        // Cetak daftar student dalam urutan input
         for (Student student : students) {
             System.out.println(student);
         }
 
+        // Cetak daftar enrollment dalam urutan input
         for (Enrollment enrollment : enrollments) {
             System.out.println(enrollment);
         }
