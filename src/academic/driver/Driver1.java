@@ -48,9 +48,8 @@ public class Driver1 {
                         int year = Integer.parseInt(parts[3]);
                         String major = parts[4];
 
-                        if (!isStudentExists(students, id)) {
-                            students.add(new Student(id, name, year, major));
-                        }
+                        // Jangan urutkan daftar mahasiswa, biarkan sesuai urutan input
+                        students.add(new Student(id, name, year, major));
                     }
                     break;
 
@@ -77,16 +76,20 @@ public class Driver1 {
             System.out.println(error);
         }
 
+        // Tetap urutkan daftar course
         courses.sort(Comparator.comparing(Course::getCode));
         for (Course course : courses) {
             System.out.println(course);
         }
 
-        students.sort(Comparator.comparing(Student::getId));
+        // Jangan urutkan daftar mahasiswa agar sesuai input
         for (Student student : students) {
             System.out.println(student);
         }
 
+        // Urutkan enrollments berdasarkan Course Code lalu Student ID
+        enrollments.sort(Comparator.comparing(Enrollment::getCourseCode)
+                                   .thenComparing(Enrollment::getStudentId));
         for (Enrollment enrollment : enrollments) {
             System.out.println(enrollment);
         }
